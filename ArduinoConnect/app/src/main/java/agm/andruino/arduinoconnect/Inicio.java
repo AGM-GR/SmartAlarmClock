@@ -38,7 +38,7 @@ public class Inicio extends AppCompatActivity {
     // SPP UUID service - this should work for most devices
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    // String for MAC address
+    // String para la dirección MAC
     private static String address = null;
 
     @Override
