@@ -98,18 +98,18 @@ bool BTController::isON() {
 
 bool BTController::readChar(char &command) {
 
-  bool datorecivido = false;
+  bool datoRecibido = false;
   
   if (BTmodule.available()) {
-    datorecivido = true;
+    datoRecibido = true;
     command = BTmodule.read();
     BTmodule.flush();
   
   } else {
-    datorecivido = false;
+    datoRecibido = false;
   }
 
-  return datorecivido;
+  return datoRecibido;
 }
 
 int BTController::sendBT(char command) {

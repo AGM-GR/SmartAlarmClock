@@ -29,7 +29,7 @@ int BuzzerPin = 13;
 
 //Variables internas
 int* Color;
-char CharRecivido;
+char CharRecibido;
 String Codigo = "";
 
 BTController btModule(RxB, TxB);
@@ -60,18 +60,18 @@ void setup() {
 void loop() {
 
   //Recive datos del módulo Bluetooth
-  if (btModule.readChar(CharRecivido)) {
+  if (btModule.readChar(CharRecibido)) {
 
-    //Lee los códigos recividos por Bluetooth
+    //Lee los códigos Recibidos por Bluetooth
     // Los códigos empiezan por '#' 
     // seguido de una letra que indica para que son y seguido de los datos.
     // La recepcion de un código acaba al recibir el simbolo '$'.
-    if (CharRecivido == '#')
-      Codigo = CharRecivido;
-    else if (CharRecivido == '$')
+    if (CharRecibido == '#')
+      Codigo = CharRecibido;
+    else if (CharRecibido == '$')
       procesarCodigo();
     else if (Codigo[0] == '#')
-      Codigo = Codigo+CharRecivido;
+      Codigo = Codigo+CharRecibido;
   
   }
 
