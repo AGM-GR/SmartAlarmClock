@@ -202,3 +202,65 @@ void RGBLEDController::SetColor(int nuevoColor[]) {
   SetGreen(nuevoColor[1]);
   SetBlue(nuevoColor[2]);
 }
+
+//Procesa un código recivido por el módulo bluetooth
+void RGBLEDController::ProcessCode(String code, BTController btModule) {
+
+  int nuevocolor;
+
+  switch (Codigo[2]) {
+    
+    //El código #LP Enciende o apaga el led
+    case 'P':
+      rgbLED.SwitchPower();
+    break;
+    
+    //El código #LRxxx Cambia el color Rojo del led
+    case 'R':
+      nuevocolor = (Codigo[3] - '0') * 100;
+      nuevocolor += (Codigo[4] - '0') * 10;
+      nuevocolor += (Codigo[5] - '0');
+
+      rgbLED.SetRed(nuevocolor);
+    break;
+
+    //El código #LGxxx Cambia el color Verde del led
+    case 'G':
+      nuevocolor = (Codigo[3] - '0') * 100;
+      nuevocolor += (Codigo[4] - '0') * 10;
+      nuevocolor += (Codigo[5] - '0');
+
+      rgbLED.SetGreen(nuevocolor);
+    break;
+
+    //El código #LBxxx Cambia el color Azul del led
+    case 'B':
+      nuevocolor = (Codigo[3] - '0') * 100;
+      nuevocolor += (Codigo[4] - '0') * 10;
+      nuevocolor += (Codigo[5] - '0');
+
+      rgbLED.SetBlue(nuevocolor);
+    break;
+
+    //El código #LD Obtiene los datos del led
+    case 'D':
+
+      // 1º Información de encendido o apagado
+      if (isON())
+        btModule.write("#1$");
+      else
+        btModule.write("#0$");
+
+      // 2º Información Color R
+      btModule.write("#"+String(Color[0])+"$");
+      
+      // 3º Información Color G
+      btModule.write("#"+String(Color[1])+"$");
+      
+      // 4º Información Color B
+      btModule.write("#"+String(Color[2])+"$");
+    break;
+  }
+  
+}
+

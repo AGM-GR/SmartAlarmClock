@@ -2,6 +2,7 @@
 #include <SPI.h>
 #include "Adafruit_GFX.h"
 #include "Adafruit_PCD8544_MOD.h"
+#include "Images.h"
 
 LCD5110Controller::LCD5110Controller(int clk, int din, int dc, int cs, int rst, int bl) {
   this->CLK = clk;
@@ -26,9 +27,11 @@ void LCD5110Controller::begin() {
   //Ajuste Contraste
   LCDdisplay.setContrast(Contraste);
 
-  LCDdisplay.display(); // show splashscreen
-  delay(2000);
-  LCDdisplay.clearDisplay();   // clears the screen and buffer
+  //Muestra el logo
+  LCDdisplay.display();
+  
+  //Limpia el display y el buffer
+  LCDdisplay.clearDisplay();
 }
 
 //Enciende la luz del LCD
@@ -100,3 +103,45 @@ void LCD5110Controller::SetBrightness(int brightness) {
 }
 
 
+//Dibuja la hora
+void LCD5110Controller::DrawHour(String hour) {
+
+  LCDdisplay.setTextSize(2);
+  LCDdisplay.setTextColor(BLACK);
+  LCDdisplay.setCursor(15,16);
+  
+  LCDdisplay.write(hour[0]);
+  LCDdisplay.write(hour[1]);
+  LCDdisplay.write(':');
+  LCDdisplay.write(hour[2]);
+  LCDdisplay.write(hour[3]);
+  
+  LCDdisplay.display();
+}
+
+//Dibuja la fecha
+void LCD5110Controller::DrawDate(String date) {
+
+  LCDdisplay.setTextSize(1);
+  LCDdisplay.setTextColor(BLACK);
+  LCDdisplay.setCursor(18,34);
+  
+  LCDdisplay.write(date[0]);
+  LCDdisplay.write(date[1]);
+  LCDdisplay.write('/');
+  LCDdisplay.write(date[2]);
+  LCDdisplay.write(date[3]);
+  LCDdisplay.write('/');
+  LCDdisplay.write(date[4]);
+  LCDdisplay.write(date[5]);
+  
+  LCDdisplay.display();
+}
+
+//Dibuja el icono de bluetooth
+void LCD5110Controller::DrawBluetooth() {
+  
+  LCDdisplay.drawBitmap(75, 0, bluetooth, 9, 15, 1);
+  
+  LCDdisplay.display();
+}

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_inicio"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/colorWhiteCloud"
+    tools:context="agm.andruino.arduinoconnect.Inicio">
+
+    <!-- HEADER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/led_header"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:text="LED:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/LEDText"
+            android:textSize="36sp"
+            android:layout_marginStart="20dp"
+            android:textStyle="normal|bold" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/LEDButton"
+            android:checked="false" />
+
+    </LinearLayout>
+
+    <!-- LISTA DE OPCIONES -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/led_header" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- TEXTO COLOR -->
+            <TextView
+                android:text="Color:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20px"
+                android:id="@+id/ColorText"
+                android:textSize="24sp"
+                style="@style/TextBlack"
+                android:textStyle="bold"/>
+
+            <!-- COLOR ROJO -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10px">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:text="Rojo:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/REDText"
+                        android:textSize="30sp" />
+
+                    <EditText
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/REDNumber"
+                        android:maxLines="1"
+                        android:selectAllOnFocus="false"
+                        android:text="0"
+                        android:maxLength="3"
+                        android:layout_height="50dp"
+                        android:layout_width="40dp"
+                        android:hint="0"
+                        android:layout_alignParentEnd="true"/>
+                </RelativeLayout>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/REDseek"
+                    android:max="255"
+                    android:progress="0"/>
+            </LinearLayout>
+
+            <!-- COLOR VERDE -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10px">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Verde:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/GREENText"
+                        android:textSize="30sp" />
+
+                    <EditText
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:ems="10"
+                        android:id="@+id/GREENNumber"
+                        android:hint="0"
+                        android:text="0"
+                        android:maxLines="1"
+                        android:inputType="number"
+                        android:selectAllOnFocus="false"
+                        android:maxLength="3"
+                        android:layout_alignParentEnd="true" />
+                </RelativeLayout>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/GREENseek"
+                    android:layout_below="@+id/GREENText"
+                    android:layout_alignParentStart="true"
+                    android:max="255"
+                    android:progress="0" />
+            </LinearLayout>
+
+            <!-- COLOR AZUL -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10px">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="Azul:"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/BLUEText"
+                        android:textSize="30sp" />
+
+                    <EditText
+                        android:layout_width="40dp"
+                        android:layout_height="50dp"
+                        android:inputType="number"
+                        android:ems="10"
+                        android:id="@+id/BLUENumber"
+                        android:layout_alignParentEnd="true"
+                        android:hint="0"
+                        android:maxLines="1"
+                        android:selectAllOnFocus="false"
+                        android:text="0"
+                        android:maxLength="3" />
+                </RelativeLayout>
+
+                <SeekBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/BLUEseek"
+                    android:layout_below="@+id/BLUEText"
+                    android:layout_alignParentStart="true"
+                    android:progress="0"
+                    android:max="255" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/SendColorButton"
+                android:text="ENVIAR COLOR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -31,6 +31,9 @@ public:
   int GetBrightness();
   void SetBrightness(int brightness);
 
+  void DrawHour(String hour);
+  void DrawDate(String date);
+  void DrawBluetooth();
   
 };
 

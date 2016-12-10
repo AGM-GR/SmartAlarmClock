@@ -1,109 +1,114 @@
 package agm.andruino.arduinoconnect;
 
+import java.util.ArrayList;
 import java.util.Set;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class DeviceList extends Activity {
-    // Debugging for LOGCAT
-    private static final String TAG = "DeviceListActivity";
-    private static final boolean D = true;
 
+    // Declara el AlertDialog para el status
+    AlertDialog connectionStatus;
 
-    // declare button for launching website and textview for connection status
-    Button tlbutton;
-    TextView textView1;
+    // Constructores de dialogos
+    AlertDialog.Builder notFound;
+    AlertDialog.Builder loading;
 
-    // EXTRA string to send on to mainactivity
+    // EXTRA string para enviar a la actividad principal la dirección del modulo bt
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
 
-    // Member fields
-    private BluetoothAdapter mBtAdapter;
-    private ArrayAdapter mPairedDevicesArrayAdapter;
+    // Controlador bluetooth y array de dispositivos
+    private BTController BTcontroller = BTController.getInstance();
+    private ArrayList<Device> PairedDevices = new ArrayList();
 
+    //Al crear la actividad inicializa la lista de dispositivos y los AlertDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
+
+        notFound = new AlertDialog.Builder(this)
+                .setTitle("Ningun dispositivo encontrado")
+                .setMessage("Empareja el dispositivo desde la configuración del telefono.");
+
+        loading = new AlertDialog.Builder(this)
+                .setTitle("Conectando ...")
+                .setMessage("Espere unos segundos a que se conecte al dispositivo bluetooth");
+
+        connectionStatus = notFound.create();
     }
 
+    //Función Resume de la actividad
     @Override
-    public void onResume()
-    {
+    public void onResume() {
+
         super.onResume();
-        checkBTState();
 
-        textView1 = (TextView) findViewById(R.id.connecting);
-        textView1.setTextSize(40);
-        textView1.setText(" ");
+        // Limpia cualquier mensaje mostrado
+        if (connectionStatus.isShowing())
+            connectionStatus.dismiss();
 
-        // Initialize array adapter for paired devices
-        mPairedDevicesArrayAdapter = new ArrayAdapter(this, R.layout.device_name);
+        //Limpia la conexión bluetooth anterior
+        BTcontroller.close();
 
-        // Find and set up the ListView for paired devices
-        ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
-        pairedListView.setAdapter(mPairedDevicesArrayAdapter);
-        pairedListView.setOnItemClickListener(mDeviceClickListener);
+        //Comprueba el estado del BT
+        BTcontroller.checkBTState(this);
 
-        // Get the local Bluetooth adapter
-        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+        // Obtiene los dispositivos ya conectados al bluetooth
+        Set pairedDevices = BTcontroller.getAdapter().getBondedDevices();
 
-        // Get a set of currently paired devices and append to 'pairedDevices'
-        Set pairedDevices = mBtAdapter.getBondedDevices();
+        //Inicializa el array de dispositivos
+        PairedDevices = new ArrayList();
 
-        // Add previosuly paired devices to the array
+        // Añade los dispositivos conectados al array
         if (pairedDevices.size() > 0) {
             for (Object device : pairedDevices) {
-                mPairedDevicesArrayAdapter.add(((BluetoothDevice)device).getName() + "\n" + ((BluetoothDevice)device).getAddress());
+                PairedDevices.add(new Device(((BluetoothDevice)device).getName(), ((BluetoothDevice)device).getAddress()));
             }
         } else {
-            String noDevices = "Ningun dispositivo pudo ser emparejado";
-            mPairedDevicesArrayAdapter.add(noDevices);
+            connectionStatus = notFound.create();
+            connectionStatus.show();
         }
+
+
+        // Establece la vista, el adaptador y la funcion al hacer click de los elementos de la lista
+        ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
+        pairedListView.setAdapter(new DeviceAdapter(PairedDevices));
+        pairedListView.setOnItemClickListener(DeviceClickListener);
+
     }
 
-    // Set up on-click listener for the list (nicked this - unsure)
-    private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
+    // OnItemClickListener para los dispositivos de la lista
+    private OnItemClickListener DeviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView av, View v, int arg2, long arg3) {
 
-            textView1.setText("Conectando...");
-            // Get the device MAC address, which is the last 17 chars in the View
-            String info = ((TextView) v).getText().toString();
-            String address = info.substring(info.length() - 17);
+            //Muestra alert con el mensaje cargando
+            connectionStatus = loading.create();
+            connectionStatus.show();
 
-            // Make an intent to start next activity while taking an extra which is the MAC address.
-            Intent i = new Intent(DeviceList.this, Inicio.class);
-            i.putExtra(EXTRA_DEVICE_ADDRESS, address);
-            startActivity(i);
+            // Obtiene la dirección MAC de la vista
+            String address = ((TextView) v.findViewById(R.id.deviceMac)).getText().toString();
+
+            //Inicia el bluetooth
+            boolean iniciado = BTcontroller.initialice(address);
+
+            if (iniciado) {
+
+                // Inicia la siguiente acitividad mandandole un EXTRA que contiene la dirección MAC.
+                Intent i = new Intent(DeviceList.this, Inicio.class);
+                startActivity(i);
+            }
+
         }
     };
 
-    public void checkBTState() {
-        // Check device has Bluetooth and that it is turned on
-        mBtAdapter=BluetoothAdapter.getDefaultAdapter(); // CHECK THIS OUT THAT IT WORKS!!!
-        if(mBtAdapter==null) {
-            Toast.makeText(getBaseContext(), "El dispositivo no soporta Bluetooth", Toast.LENGTH_SHORT).show();
-        } else {
-            if (mBtAdapter.isEnabled()) {
-                Log.d(TAG, "...Bluetooth Activado...");
-            } else {
-                //Prompt user to turn on Bluetooth
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, 1);
-
-            }
-        }
-    }
 }

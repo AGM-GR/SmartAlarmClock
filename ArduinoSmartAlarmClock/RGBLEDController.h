@@ -34,6 +34,8 @@ class RGBLEDController {
     void SetBlue(int azul);
     void SetColor(int rojo, int verde, int azul);
     void SetColor(int nuevoColor[]);
+
+    void ProcessCode(String code, BTController btModule);
 };
 
 #endif

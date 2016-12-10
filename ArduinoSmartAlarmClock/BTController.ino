@@ -96,6 +96,34 @@ bool BTController::isON() {
   return ON;
 }
 
+void BTController::waitOK() {
+
+  char CharRecibido;
+  String ok = "";
+  int timeout = TIMEOUT;
+
+  while ((ok != "OK") && (timeout > 0)) {
+
+    delay(1);
+    timeout -= 1;
+    
+    if (btModule.readChar(CharRecibido)) {
+      
+      if (CharRecibido == 'O')
+        ok = CharRecibido;
+      else if (ok[0] == 'O')
+        ok = ok+CharRecibido;
+      else
+        ok = "";
+    }
+
+    if (ok == "OK")
+      Serial.println("OK RECIBIDO.");
+    else if (timeout < 1)
+      Serial.println("TIMEOUT");
+  }
+}
+
 bool BTController::readChar(char &command) {
 
   bool datoRecibido = false;
@@ -112,22 +140,35 @@ bool BTController::readChar(char &command) {
   return datoRecibido;
 }
 
-int BTController::sendBT(char command) {
+int BTController::write(char command) {
+
+  int result = BTmodule.write(command);
+
+  waitOK();
   
-  return BTmodule.write(command);
+  return result;
 }
 
-int BTController::sendBT(char* command) {
+int BTController::write(char* command) {
   
-  return BTmodule.write(command);
+  int result = BTmodule.write(command);
+
+  waitOK();
+  
+  return result;
 }
 
-int BTController::sendBT(String command) {
+int BTController::write(String command) {
 
   int bytesSent = 0;
-
+  char cadena[command.length()];
+  
   for(int i=0; i<command.length(); i++)
-    bytesSent += BTmodule.write(command[i]);
+    cadena[i] = command[i];
+    
+  bytesSent = BTmodule.write(cadena);
+
+  waitOK();
   
   return bytesSent;
 }

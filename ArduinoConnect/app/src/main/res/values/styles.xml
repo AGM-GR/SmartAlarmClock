@@ -8,4 +8,26 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <!-- Text styles. -->
+    <style name="TitleBlack">
+        <item name="android:textColor">@color/colorSoftBlack</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextBlack">
+        <item name="android:textColor">@color/colorSoftBlack</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="TitleWhite">
+        <item name="android:textColor">@color/colorWhiteCloud</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="TextWhite">
+        <item name="android:textColor">@color/colorWhiteCloud</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
 </resources>

@@ -12,6 +12,8 @@ private:
   int POWER;
   int Baudios;
   bool ON = false;
+  //1s de timeout de espera a recivir un OK al mandar información
+  const int TIMEOUT = 1000;
   //Predefino el bluetooth en los pines 10 y 11 por la falta de un constructor vacío en la clase SoftwareSerial
   // en el contructor de esta clase se le asigna los pines correspondientes.
   SoftwareSerial BTmodule = SoftwareSerial(10,11);
@@ -27,11 +29,13 @@ public:
   void PowerOFF();
   void SwitchPower();
   bool isON();
+
+  void waitOK();
   
   bool readChar(char &command);
-  int sendBT(char command);
-  int sendBT(char* command); 
-  int sendBT(String command);  
+  int write(char command);
+  int write(char* command); 
+  int write(String command);  
 };
 
 #endif

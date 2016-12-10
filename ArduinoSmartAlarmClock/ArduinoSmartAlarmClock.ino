@@ -3,7 +3,9 @@
 #include "RGBLEDController.h"
 #include "BUZZERController.h"
 
-/******************************************************/
+/////////////////////////////////////////////////////////////////////////////
+///////////////////// VARIABLES DE CONFIGURACIÓN ////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
 //Pines módulo Bluetooth
 int RxB = 11;
@@ -25,9 +27,10 @@ int BluePin = 10;
 //Pin Buzzer
 int BuzzerPin = 13;
 
-/******************************************************/
+/////////////////////////////////////////////////////////////////////////////
+////////////////////////// VARIABLES INTERNAS ///////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
-//Variables internas
 int* Color;
 char CharRecibido;
 String Codigo = "";
@@ -37,15 +40,22 @@ LCD5110Controller lcdModule(Clk,Din,DC,CS,RST,BL);
 RGBLEDController rgbLED(RedPin,GreenPin,BluePin,HIGH);
 BUZZERController buzzer(BuzzerPin);
 
-void setup() {
+/////////////////////////////////////////////////////////////////////////////
+////////////////////////// FUNCIONES DE ARDUINO /////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
-  //Inicializamos modulo BT
-  btModule.begin();
+void setup() {
 
   //Inicializamos el LCD
   lcdModule.begin();
   lcdModule.PowerON();
   lcdModule.SetBrightness(100);
+  lcdModule.DrawHour("1425");
+  lcdModule.DrawDate("260695");
+  lcdModule.DrawBluetooth();
+
+  //Inicializamos modulo BT
+  btModule.begin();
   
   //Inicializamos el Led RGB
   rgbLED.begin();
@@ -57,69 +67,52 @@ void setup() {
   Serial.begin(9600);
 }
 
+
 void loop() {
 
   //Recive datos del módulo Bluetooth
   if (btModule.readChar(CharRecibido)) {
-
-    //Lee los códigos Recibidos por Bluetooth
-    // Los códigos empiezan por '#' 
-    // seguido de una letra que indica para que son y seguido de los datos.
-    // La recepcion de un código acaba al recibir el simbolo '$'.
-    if (CharRecibido == '#')
-      Codigo = CharRecibido;
-    else if (CharRecibido == '$')
-      procesarCodigo();
-    else if (Codigo[0] == '#')
-      Codigo = Codigo+CharRecibido;
-  
+    RecibirCodigo(CharRecibido);
   }
 
   //Un pequeño delay para aumantar la estabilidad
   delay(2);
 }
 
-void procesarCodigo() {
 
-  int nuevocolor;
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////// FUNCIONES PROPIAS ///////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+
+//Función para recibir códigos del módulo BT
+void RecibirCodigo (char recibido) {
+
+  //Lee los códigos Recibidos por Bluetooth
+  // Los códigos empiezan por '#' 
+  // seguido de una letra que indica para que son y seguido de los datos.
+  // La recepcion de un código acaba al recibir el simbolo '$'.
+  if (recibido == '#')
+    Codigo = recibido;
+  else if (recibido == '$')
+    procesarCodigo();
+  else if (Codigo[0] == '#')
+    Codigo = Codigo+recibido;
+}
+
+//Función para procesar los códigos recibidos
+void procesarCodigo() {
 
   switch (Codigo[1]) {
 
-    //El código #H Pide los datos del sistema
-    case 'H':
-
+    //El código #D... para el display
+    case 'D':
+      lcdModule.SwitchPower();
     break;
     
-    //El código #P Enciende o apaga el led
-    case 'P':
-      rgbLED.SwitchPower();
-    break;
-    
-    //El código #Rxxx Cambia el color Rojo del led
-    case 'R':
-      nuevocolor = (Codigo[2] - '0') * 100;
-      nuevocolor += (Codigo[3] - '0') * 10;
-      nuevocolor += (Codigo[4] - '0');
-
-      rgbLED.SetRed(nuevocolor);
-    break;
-
-    //El código #Gxxx Cambia el color Verde del led
-    case 'G':
-      nuevocolor = (Codigo[2] - '0') * 100;
-      nuevocolor += (Codigo[3] - '0') * 10;
-      nuevocolor += (Codigo[4] - '0');
-
-      rgbLED.SetGreen(nuevocolor);
-    break;
-
-    //El código #Bxxx Cambia el color Azul del led
-    case 'B':
-      nuevocolor = (Codigo[2] - '0') * 100;
-      nuevocolor += (Codigo[3] - '0') * 10;
-      nuevocolor += (Codigo[4] - '0');
-
-      rgbLED.SetBlue(nuevocolor);
+    //El código #L.. para el modulo led
+    case 'L':
+      rgbLED.ProcessCode(Codigo, btModule);
     break;
 
   }

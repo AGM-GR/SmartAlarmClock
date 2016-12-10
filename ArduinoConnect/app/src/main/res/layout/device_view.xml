@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="agm.andruino.arduinoconnect.DeviceView"
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="5dp"
+    android:paddingTop="5dp"
+    android:orientation="horizontal">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:src="@drawable/bluetooth"
+        android:layout_height="40dp"
+        android:layout_width="20dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+            android:id="@+id/TextLinearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/deviceName"
+                android:text="Nombre Dispositivo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TitleBlack">
+            </TextView>
+            <TextView
+                android:id="@+id/deviceMac"
+                android:text="00:00:00:00:00:00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextBlack">
+            </TextView>
+        </LinearLayout>
+
+</LinearLayout>
