@@ -55,11 +55,11 @@ public class LEDController extends AppCompatActivity {
                 if (isCheked && !gettingInfo) {
                     //The toggle is enabled
                     BTconect.write("#LP$");
-                    Toast.makeText(getBaseContext(), "LED Encendido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), R.string.led_on, Toast.LENGTH_SHORT).show();
                 } else if (!gettingInfo) {
                     //The toggle is disabled
                     BTconect.write("#LP$");
-                    Toast.makeText(getBaseContext(), "LED Apagado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), R.string.led_off, Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -1,3 +1,42 @@
 <resources>
-    <string name="app_name">ArduinoConnect</string>
+    <string name="app_name">Arduino Connect</string>
+
+    <!-- DeviceList Strings -->
+    <string name="alert_not_found">Devices not found</string>
+    <string name="alert_not_found_message">Sync the device in your phone\'s bluetooth configuration.</string>
+
+    <string name="alert_connecting">Conecting ...</string>
+    <string name="alert_connecting_message">Wait for a while.</string>
+
+    <string name="devicelist_title">Select your Bluetooth Device:</string>
+
+    <string name="device_name">Device Name</string>
+
+    <!-- Inicio Strings -->
+    <string name="clock">Clock</string>
+    <string name="led">LED</string>
+    <string name="sound">Sound</string>
+
+    <!-- LEDController Strings -->
+    <string name="led_on">LED ON</string>
+    <string name="led_off">LED OFF</string>
+
+    <string name="led_color_menu">Color:</string>
+    <string name="led_color_r">Red:</string>
+    <string name="led_color_g">Green:</string>
+    <string name="led_color_b">Blue:</string>
+    <string name="led_send_color">SEND COLOR</string>
+
+    <!-- ClockController Strings -->
+    <string name="display_on">Display ON</string>
+    <string name="display_off">Display OFF</string>
+
+    <string name="display_hour_menu">Hour:</string>
+    <string name="display_date_menu">Date:</string>
+
+    <string name="set_button">Set</string>
+
+    <!-- SoundController Strings -->
+    <string name="sound_menu">Sound</string>
+
 </resources>

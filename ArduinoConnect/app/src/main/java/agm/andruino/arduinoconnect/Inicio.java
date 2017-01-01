@@ -1,15 +1,11 @@
 package agm.andruino.arduinoconnect;
 
 import java.io.IOException;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class Inicio extends AppCompatActivity {
 
@@ -31,15 +27,15 @@ public class Inicio extends AppCompatActivity {
         clockController.setOnClickListener(new LinearLayout.OnClickListener() {
             public void onClick(View view) {
 
-                // Inicia la siguiente acitividad mandandole un EXTRA que contiene la dirección MAC.
-                /*Intent i = new Intent(Inicio.this, LEDController.class);
-                startActivity(i);*/
+                // Inicia la siguiente acitividad.
+                Intent i = new Intent(Inicio.this, ClockController.class);
+                startActivity(i);
             }
         });
         ledController.setOnClickListener(new LinearLayout.OnClickListener() {
             public void onClick(View view) {
 
-                // Inicia la siguiente acitividad mandandole un EXTRA que contiene la dirección MAC.
+                // Inicia la siguiente acitividad.
                 Intent i = new Intent(Inicio.this, LEDController.class);
                 startActivity(i);
             }
@@ -47,9 +43,9 @@ public class Inicio extends AppCompatActivity {
         soundController.setOnClickListener(new LinearLayout.OnClickListener() {
             public void onClick(View view) {
 
-                // Inicia la siguiente acitividad mandandole un EXTRA que contiene la dirección MAC.
-                /*Intent i = new Intent(Inicio.this, LEDController.class);
-                startActivity(i);*/
+                // Inicia la siguiente acitividad.
+                Intent i = new Intent(Inicio.this, SoundController.class);
+                startActivity(i);
             }
         });
     }
@@ -62,4 +58,16 @@ public class Inicio extends AppCompatActivity {
         BTController.checkBTState(this);
         BTController.getInstance().checkBTConnection(this);
     }
+
+    //Función onDestroy()
+    @Override
+    public void onDestroy() {
+
+        try {
+            BTController.getInstance().close();
+        } catch (IOException e) { }
+
+        super.onDestroy();
+    }
+
 }

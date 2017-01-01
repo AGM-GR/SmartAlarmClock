@@ -18,7 +18,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".Inicio"></activity>
+        <activity android:name=".ClockController"></activity>
         <activity android:name=".LEDController"></activity>
+        <activity android:name=".SoundController"></activity>
     </application>
 
 </manifest>

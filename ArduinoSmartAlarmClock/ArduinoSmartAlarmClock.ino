@@ -1,7 +1,8 @@
 #include "BTController.h"
-#include "LCD5110Controller.h"
+#include "DisplayController.h"
+#include "ClockController.h"
 #include "RGBLEDController.h"
-#include "BUZZERController.h"
+#include "BuzzerController.h"
 
 /////////////////////////////////////////////////////////////////////////////
 ///////////////////// VARIABLES DE CONFIGURACIÓN ////////////////////////////
@@ -34,11 +35,13 @@ int BuzzerPin = 13;
 int* Color;
 char CharRecibido;
 String Codigo = "";
+int lastMinute = NULL;
 
 BTController btModule(RxB, TxB);
-LCD5110Controller lcdModule(Clk,Din,DC,CS,RST,BL);
+DisplayController lcdModule(Clk,Din,DC,CS,RST,BL);
+ClockController clockModule;
 RGBLEDController rgbLED(RedPin,GreenPin,BluePin,HIGH);
-BUZZERController buzzer(BuzzerPin);
+BuzzerController buzzer(BuzzerPin);
 
 /////////////////////////////////////////////////////////////////////////////
 ////////////////////////// FUNCIONES DE ARDUINO /////////////////////////////
@@ -46,14 +49,14 @@ BUZZERController buzzer(BuzzerPin);
 
 void setup() {
 
+  //Inicializamos el Reloj
+  clockModule.begin();
+  
   //Inicializamos el LCD
   lcdModule.begin();
   lcdModule.PowerON();
   lcdModule.SetBrightness(100);
-  lcdModule.DrawHour("1425");
-  lcdModule.DrawDate("260695");
-  lcdModule.DrawBluetooth();
-
+  
   //Inicializamos modulo BT
   btModule.begin();
   
@@ -75,8 +78,16 @@ void loop() {
     RecibirCodigo(CharRecibido);
   }
 
-  //Un pequeño delay para aumantar la estabilidad
-  delay(2);
+  clockModule.GetTime();
+
+  if (lastMinute != clockModule.GetMins()) {
+    
+    lastMinute = clockModule.GetMins();
+    lcdModule.ClearDisplay();
+    lcdModule.DrawHour(clockModule.GetStringHour());
+    lcdModule.DrawDate(clockModule.GetStringDate());
+    lcdModule.DrawBluetooth();
+  }
 }
 
 
@@ -105,16 +116,22 @@ void procesarCodigo() {
 
   switch (Codigo[1]) {
 
+    //El código #C... para el reloj
+    case 'C':
+      clockModule.ProcessCode(Codigo, btModule);
+      //Redibuja la pantalla
+      lastMinute = -1;
+    break;
+    
     //El código #D... para el display
     case 'D':
-      lcdModule.SwitchPower();
+      lcdModule.ProcessCode(Codigo, btModule);
     break;
     
     //El código #L.. para el modulo led
     case 'L':
       rgbLED.ProcessCode(Codigo, btModule);
     break;
-
   }
 
   //Limpia la variable Codigo

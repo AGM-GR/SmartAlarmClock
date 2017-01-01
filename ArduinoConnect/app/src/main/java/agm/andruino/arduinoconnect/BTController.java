@@ -57,7 +57,10 @@ public class BTController {
             BTSocket.connect();
 
         } catch (IOException e) {
-            try { BTSocket.close(); }
+            try {
+                close();
+                return false;
+            }
             catch (IOException e2) { return false; }
         }
 
@@ -79,17 +82,13 @@ public class BTController {
 
 
     //Cierra el socket
-    public void close() {
+    public void close() throws IOException {
 
         if (BTSocket != null) {
 
             //Cierra el socket
-            try {
 
-                BTSocket.close();
-
-            } catch (IOException e2) {
-            }
+            BTSocket.close();
 
             //Limpia todas las variables
             address = "";

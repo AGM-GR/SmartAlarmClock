@@ -1,18 +1,18 @@
-#include "BUZZERController.h"
+#include "BuzzerController.h"
 
-BUZZERController::BUZZERController(int bz) {
+BuzzerController::BuzzerController(int bz) {
 
   this->BZPin = bz;
 }
 
 //Inicializa el Buzzer
-void BUZZERController::begin() {
+void BuzzerController::begin() {
 
   pinMode(BZPin, OUTPUT);
 }
 
 //Reproduce un "beep" con un tono durante un tiempo
-void BUZZERController::beep(int tono, int tiempo) {
+void BuzzerController::beep(int tono, int tiempo) {
   
   analogWrite(BZPin, tono);
   delay(tiempo);
@@ -20,7 +20,7 @@ void BUZZERController::beep(int tono, int tiempo) {
 }
 
 //Reproduce un "tono" con un tono durante un tiempo
-void BUZZERController::tono(int tono, int tiempo) {
+void BuzzerController::tono(int tono, int tiempo) {
 
   if (tono < numTonos) {
     tone(BZPin, tonos[tono]);

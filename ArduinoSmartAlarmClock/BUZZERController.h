@@ -1,7 +1,7 @@
 #ifndef BUZZERCONTROLLER
 #define BUZZERCONTROLLER
 
-class BUZZERController {
+class BuzzerController {
 
 private:
   int BZPin;
@@ -11,7 +11,7 @@ private:
   bool ON = false;
     
 public:
-  BUZZERController(int bz);
+  BuzzerController(int bz);
   void begin();
 
   void beep(int tono, int tiempo);

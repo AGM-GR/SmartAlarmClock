@@ -208,38 +208,38 @@ void RGBLEDController::ProcessCode(String code, BTController btModule) {
 
   int nuevocolor;
 
-  switch (Codigo[2]) {
+  switch (code[2]) {
     
     //El código #LP Enciende o apaga el led
     case 'P':
-      rgbLED.SwitchPower();
+      SwitchPower();
     break;
     
     //El código #LRxxx Cambia el color Rojo del led
     case 'R':
-      nuevocolor = (Codigo[3] - '0') * 100;
-      nuevocolor += (Codigo[4] - '0') * 10;
-      nuevocolor += (Codigo[5] - '0');
+      nuevocolor = (code[3] - '0') * 100;
+      nuevocolor += (code[4] - '0') * 10;
+      nuevocolor += (code[5] - '0');
 
-      rgbLED.SetRed(nuevocolor);
+      SetRed(nuevocolor);
     break;
 
     //El código #LGxxx Cambia el color Verde del led
     case 'G':
-      nuevocolor = (Codigo[3] - '0') * 100;
-      nuevocolor += (Codigo[4] - '0') * 10;
-      nuevocolor += (Codigo[5] - '0');
+      nuevocolor = (code[3] - '0') * 100;
+      nuevocolor += (code[4] - '0') * 10;
+      nuevocolor += (code[5] - '0');
 
-      rgbLED.SetGreen(nuevocolor);
+      SetGreen(nuevocolor);
     break;
 
     //El código #LBxxx Cambia el color Azul del led
     case 'B':
-      nuevocolor = (Codigo[3] - '0') * 100;
-      nuevocolor += (Codigo[4] - '0') * 10;
-      nuevocolor += (Codigo[5] - '0');
+      nuevocolor = (code[3] - '0') * 100;
+      nuevocolor += (code[4] - '0') * 10;
+      nuevocolor += (code[5] - '0');
 
-      rgbLED.SetBlue(nuevocolor);
+      SetBlue(nuevocolor);
     break;
 
     //El código #LD Obtiene los datos del led

@@ -29,7 +29,7 @@
 
             <TextView
                 android:id="@+id/deviceName"
-                android:text="Nombre Dispositivo"
+                android:text="@string/device_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/TitleBlack">

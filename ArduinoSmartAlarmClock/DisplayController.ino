@@ -1,10 +1,10 @@
-#include "LCD5110Controller.h"
+#include "DisplayController.h"
 #include <SPI.h>
 #include "Adafruit_GFX.h"
 #include "Adafruit_PCD8544_MOD.h"
 #include "Images.h"
 
-LCD5110Controller::LCD5110Controller(int clk, int din, int dc, int cs, int rst, int bl) {
+DisplayController::DisplayController(int clk, int din, int dc, int cs, int rst, int bl) {
   this->CLK = clk;
   this->DIN = din;
   this->DC = dc;
@@ -16,7 +16,7 @@ LCD5110Controller::LCD5110Controller(int clk, int din, int dc, int cs, int rst, 
 }
 
 //Inicializa el LCD
-void LCD5110Controller::begin() {
+void DisplayController::begin() {
 
   //Pin para el brillo
   pinMode(BL, OUTPUT);
@@ -35,7 +35,7 @@ void LCD5110Controller::begin() {
 }
 
 //Enciende la luz del LCD
-void LCD5110Controller::PowerON() {
+void DisplayController::PowerON() {
   
   if (!ON) {
     ON = true;
@@ -44,7 +44,7 @@ void LCD5110Controller::PowerON() {
 }
 
 //Apaga la luz del LCD
-void LCD5110Controller::PowerOFF() {
+void DisplayController::PowerOFF() {
 
   if (ON) {
     ON = false;
@@ -53,7 +53,7 @@ void LCD5110Controller::PowerOFF() {
 }
 
 //Cambia entre apagado y encendido
-void LCD5110Controller::SwitchPower() {
+void DisplayController::SwitchPower() {
 
   if (ON)
     PowerOFF();
@@ -62,19 +62,19 @@ void LCD5110Controller::SwitchPower() {
 }
 
 //Devuelve el estado de la luz del LCD
-bool LCD5110Controller::isON() {
+bool DisplayController::isON() {
 
   return ON;
 }
 
 //Devuelve la intensidad de la luz del LCD
-int LCD5110Controller::GetBrightness() {
+int DisplayController::GetBrightness() {
 
   return Brightness;
 }
 
 //Establece la intensidad de la luz del LCD
-void LCD5110Controller::SetBrightness(int brightness) {
+void DisplayController::SetBrightness(int brightness) {
   
   //Si está encendido cambia el brillo visualmente de forma suabe 
   // y lo almacena en la variable.
@@ -104,7 +104,7 @@ void LCD5110Controller::SetBrightness(int brightness) {
 
 
 //Dibuja la hora
-void LCD5110Controller::DrawHour(String hour) {
+void DisplayController::DrawHour(String hour) {
 
   LCDdisplay.setTextSize(2);
   LCDdisplay.setTextColor(BLACK);
@@ -120,7 +120,7 @@ void LCD5110Controller::DrawHour(String hour) {
 }
 
 //Dibuja la fecha
-void LCD5110Controller::DrawDate(String date) {
+void DisplayController::DrawDate(String date) {
 
   LCDdisplay.setTextSize(1);
   LCDdisplay.setTextColor(BLACK);
@@ -139,9 +139,39 @@ void LCD5110Controller::DrawDate(String date) {
 }
 
 //Dibuja el icono de bluetooth
-void LCD5110Controller::DrawBluetooth() {
+void DisplayController::DrawBluetooth() {
   
   LCDdisplay.drawBitmap(75, 0, bluetooth, 9, 15, 1);
   
   LCDdisplay.display();
+}
+
+//Limpia la pantalla
+void DisplayController::ClearDisplay() {
+
+    LCDdisplay.clearDisplay();
+}
+
+//Procesa un código recivido por el módulo bluetooth
+void DisplayController::ProcessCode(String code, BTController btModule) {
+
+  switch (code[2]) {
+    
+    //El código #DP Enciende o apaga el display
+    case 'P':
+      SwitchPower();
+    break;
+
+    //El código #DD Obtiene los datos del led
+    case 'D':
+
+      // 1º Información de encendido o apagado
+      if (isON())
+        btModule.write("#1$");
+      else
+        btModule.write("#0$");
+
+    break;
+  }
+  
 }

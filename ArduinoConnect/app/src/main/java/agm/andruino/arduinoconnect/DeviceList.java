@@ -1,10 +1,10 @@
 package agm.andruino.arduinoconnect;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Set;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,9 +23,6 @@ public class DeviceList extends Activity {
     AlertDialog.Builder notFound;
     AlertDialog.Builder loading;
 
-    // EXTRA string para enviar a la actividad principal la dirección del modulo bt
-    public static String EXTRA_DEVICE_ADDRESS = "device_address";
-
     // Controlador bluetooth y array de dispositivos
     private BTController BTcontroller = BTController.getInstance();
     private ArrayList<Device> PairedDevices = new ArrayList();
@@ -37,12 +34,12 @@ public class DeviceList extends Activity {
         setContentView(R.layout.activity_device_list);
 
         notFound = new AlertDialog.Builder(this)
-                .setTitle("Ningun dispositivo encontrado")
-                .setMessage("Empareja el dispositivo desde la configuración del telefono.");
+                .setTitle(R.string.alert_not_found)
+                .setMessage(R.string.alert_not_found_message);
 
         loading = new AlertDialog.Builder(this)
-                .setTitle("Conectando ...")
-                .setMessage("Espere unos segundos a que se conecte al dispositivo bluetooth");
+                .setTitle(R.string.alert_connecting)
+                .setMessage(R.string.alert_connecting_message);
 
         connectionStatus = notFound.create();
     }
@@ -58,7 +55,9 @@ public class DeviceList extends Activity {
             connectionStatus.dismiss();
 
         //Limpia la conexión bluetooth anterior
-        BTcontroller.close();
+        try {
+            BTcontroller.close();
+        } catch (IOException e) { }
 
         //Comprueba el estado del BT
         BTcontroller.checkBTState(this);

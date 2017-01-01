@@ -13,7 +13,7 @@ private:
   int Baudios;
   bool ON = false;
   //1s de timeout de espera a recivir un OK al mandar información
-  const int TIMEOUT = 1000;
+  const int TIMEOUT = 500;
   //Predefino el bluetooth en los pines 10 y 11 por la falta de un constructor vacío en la clase SoftwareSerial
   // en el contructor de esta clase se le asigna los pines correspondientes.
   SoftwareSerial BTmodule = SoftwareSerial(10,11);

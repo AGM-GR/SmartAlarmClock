@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Arduino Connect</string>
+
+    <!-- DeviceList Strings -->
+    <string name="alert_not_found">Ningun dispositivo encontrado</string>
+    <string name="alert_not_found_message">Empareja el dispositivo desde la configuración del telefono.</string>
+
+    <string name="alert_connecting">Conectando ...</string>
+    <string name="alert_connecting_message">Espere unos segundos a que se conecte al dispositivo bluetooth.</string>
+
+    <string name="devicelist_title">Seleccione su dispositivo Bluetooth:</string>
+
+    <string name="device_name">Nombre Dispositivo</string>
+
+    <!-- Inicio Strings -->
+    <string name="clock">Reloj</string>
+    <string name="led">LED</string>
+    <string name="sound">Sonido</string>
+
+    <!-- LEDController Strings -->
+    <string name="led_on">LED Encendido</string>
+    <string name="led_off">LED Apagado</string>
+
+    <string name="led_color_menu">Color:</string>
+    <string name="led_color_r">Rojo:</string>
+    <string name="led_color_g">Verde:</string>
+    <string name="led_color_b">Azul:</string>
+    <string name="led_send_color">ENVIAR COLOR</string>
+
+    <!-- ClockController Strings -->
+    <string name="display_on">Pantalla Encendida</string>
+    <string name="display_off">Pantalla Apagada</string>
+
+    <string name="display_hour_menu">Hora:</string>
+    <string name="display_date_menu">Fecha:</string>
+
+    <string name="set_button">Establecer</string>
+
+    <!-- SoundController Strings -->
+    <string name="sound_menu">Sound</string>
+
+</resources>

@@ -1,11 +1,11 @@
-#ifndef LCD5110CONTROLLER
-#define LCD5110CONTROLLER
+#ifndef DISPLAYCONTROLLER
+#define DISPLAYCONTROLLER
 
 #include <SPI.h>
 #include "Adafruit_GFX.h"
 #include "Adafruit_PCD8544_MOD.h"
 
-class LCD5110Controller {
+class DisplayController {
 
 private:
   int CLK;
@@ -20,7 +20,7 @@ private:
   Adafruit_PCD8544 LCDdisplay;
     
 public:
-  LCD5110Controller(int clk, int din, int dc, int cs, int rst, int bl);
+  DisplayController(int clk, int din, int dc, int cs, int rst, int bl);
   void begin();
   
   void PowerON();
@@ -34,7 +34,9 @@ public:
   void DrawHour(String hour);
   void DrawDate(String date);
   void DrawBluetooth();
-  
+  void ClearDisplay();
+
+  void ProcessCode(String code, BTController btModule);
 };
 
 #endif

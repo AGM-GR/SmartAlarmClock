@@ -116,11 +116,6 @@ void BTController::waitOK() {
       else
         ok = "";
     }
-
-    if (ok == "OK")
-      Serial.println("OK RECIBIDO.");
-    else if (timeout < 1)
-      Serial.println("TIMEOUT");
   }
 }
 
