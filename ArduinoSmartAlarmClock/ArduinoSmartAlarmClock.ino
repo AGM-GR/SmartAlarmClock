@@ -11,6 +11,7 @@
 //Pines módulo Bluetooth
 int RxB = 11;
 int TxB = 12;
+//int powerBT = A0;
 
 //Pines LCD Nokia5110
 int Clk = 7;
@@ -28,6 +29,12 @@ int BluePin = 10;
 //Pin Buzzer
 int BuzzerPin = 13;
 
+//Pines Botones
+int setButton = A0;
+int moreButton = A1;
+int lessButton = A2;
+int lightButton = A3;
+
 /////////////////////////////////////////////////////////////////////////////
 ////////////////////////// VARIABLES INTERNAS ///////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
@@ -37,6 +44,13 @@ char CharRecibido;
 String Codigo = "";
 int lastMinute = NULL;
 
+//Estado de los bottones
+int setState = 1;
+int moreState = 1;
+int lessState = 1;
+int lightState = 1;
+
+//Modulos Conectados
 BTController btModule(RxB, TxB);
 DisplayController lcdModule(Clk,Din,DC,CS,RST,BL);
 ClockController clockModule;
@@ -66,6 +80,12 @@ void setup() {
   //Inicializamos el Buzzer
   buzzer.begin();
 
+  //Inicializa los botones
+  pinMode(setButton, INPUT_PULLUP);
+  pinMode(moreButton, INPUT_PULLUP);
+  pinMode(lessButton, INPUT_PULLUP);
+  pinMode(lightButton, INPUT_PULLUP);
+
   //Inicializamos  el puerto serie
   Serial.begin(9600);
 }
@@ -73,10 +93,18 @@ void setup() {
 
 void loop() {
 
+  ///////////////////////////////////////////////////////////////////
+  ///////////////////// RECEPCIÓN BLUETOOTH /////////////////////////
+  ///////////////////////////////////////////////////////////////////
+
   //Recive datos del módulo Bluetooth
   if (btModule.readChar(CharRecibido)) {
     RecibirCodigo(CharRecibido);
   }
+
+  ///////////////////////////////////////////////////////////////////
+  ///////////////////// ACTUALIZACION HORA //////////////////////////
+  ///////////////////////////////////////////////////////////////////
 
   clockModule.GetTime();
 
@@ -88,6 +116,48 @@ void loop() {
     lcdModule.DrawDate(clockModule.GetStringDate());
     lcdModule.DrawBluetooth();
   }
+
+  ///////////////////////////////////////////////////////////////////
+  //////////////////////// ESTADO BOTONES  //////////////////////////
+  ///////////////////////////////////////////////////////////////////
+
+  setState = digitalRead(setButton);
+  moreState = digitalRead(moreButton);
+  lessState = digitalRead(lessButton);
+  lightState = digitalRead(lightButton);
+
+  //Si se ha pulsado el botón set
+  if (setState == LOW) {
+    
+  } 
+  else {
+    
+  }
+
+  //Si se ha pulsado el botón more
+  if (moreState == LOW) {
+  
+  }
+  else {
+    
+  }
+
+  //Si se ha pulsado el botón less
+  if (lessState == LOW) {
+  
+  }
+  else {
+    
+  }
+
+  //Si se ha pulsado el botón light
+  if (lightState == LOW) {
+  
+  }
+  else {
+    
+  }
+  
 }
 
 
@@ -118,7 +188,7 @@ void procesarCodigo() {
 
     //El código #C... para el reloj
     case 'C':
-      clockModule.ProcessCode(Codigo, btModule);
+      //clockModule.ProcessCode(Codigo, btModule);
       //Redibuja la pantalla
       lastMinute = -1;
     break;
